@@ -1,3 +1,5 @@
+using Cinemachine.Utility;
+using System.Security.Cryptography;
 using UnityEngine;
 
 [RequireComponent(typeof(Character))]
@@ -28,11 +30,17 @@ public class PlayerController : MonoBehaviour
             _character.Jump();
         }
 
-        if (Input.GetMouseButtonDown(0))
+
+        Vector3 mousePos = Input.mousePosition;
+        mousePos.z = _character.transform.position.z - Camera.main.transform.position.z;
+        Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(mousePos);
+        Vector3 mouseDir = (worldMousePosition - _character.transform.position).normalized;
+
+        float theta = Mathf.Atan2(mouseDir.y, mouseDir.x);
+        _character.CastArm.rotation = Quaternion.Euler(0, 0, theta * Mathf.Rad2Deg);
+        if(Input.GetMouseButtonDown(0))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            Vector3 closestPoint = ray.GetPoint((_character.transform.position.z - Camera.main.gameObject.transform.position.z));
-            _combat.BasicCast(closestPoint.normalized);
+            _combat.BasicCast((worldMousePosition - _character.transform.position).normalized);
         }
     }
 }

@@ -1,17 +1,25 @@
 using System.Collections;
 using UnityEngine;
-public class Character : MonoBehaviour
+public class Character : IDamageable
 {
     [Header("Character Stats")]
-    [SerializeField] private float _health;
     [SerializeField] private float _movementSpeed;
     [SerializeField] private float _jumpForce;
 
     [Header("Animations")]
     [SerializeField] private Animator _animator;
 
+    [Header("Util")]
+    [SerializeField] public Transform CastArm;
+    [SerializeField] public Transform CastPoint;
+
     private Vector2 _lastDirection;
     private Rigidbody2D _rb;
+
+    public override void OnTakeDamage()
+    {
+        Debug.Log("Ouch!");
+    }
 
     public Vector2 GetDirection()
     { 

@@ -3,6 +3,7 @@ public enum Element
 {
     Uknown,
     Fire, 
+    Ice, 
     Water,  
     Earth, 
     Air
